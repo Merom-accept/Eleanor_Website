@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eleanor — Hyper-Realistic Oil Paintings</title>
+  <meta name="description" content="Eleanor creates hyper-realistic large-scale oil paintings on canvas, murals, facades and billboards. Monumental work at every scale.">
+
+  <!-- OG Tags — replace content values with real data -->
+  <meta property="og:title"       content="Eleanor — Hyper-Realistic Oil Paintings">
+  <meta property="og:description" content="Hyper-realistic oil. Canvas to skyline.">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content=""><!-- Add your URL -->
+  <meta property="og:image"       content=""><!-- Add OG image path -->
+  <link rel="canonical"           href=""><!-- Add canonical URL -->
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:wght@300;400;500;600&family=Crimson+Pro:wght@300;400&display=swap" rel="stylesheet">
+
+  <!-- Google Analytics — drop your GA4 tag here to activate painting click tracking -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script> -->
+
+  <style>
+    /* ============================================================
+       CUSTOM PROPERTIES
+    ============================================================ */
+    :root {
+      --cream:       #F4EFE4;
+      --linen:       #EDE5D4;
+      --umber:       #2B200F;
+      --terracotta:  #B85C30;
+      --sienna:      #8B4220;
+      --gold:        #C9973A;
+      --cream-72:    rgba(244,239,228,0.72);
+      --umber-60:    rgba(43,32,15,0.60);
+      --umber-80:    rgba(43,32,15,0.80);
+
+      --font-display: 'Cormorant Garant', Georgia, serif;
+      --font-body:    'Crimson Pro', Georgia, serif;
+
+      --max-w:      1280px;
+      --max-w-text: 680px;
+      --gap:        1.5rem;
+
+      --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--umber);
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: 1.125rem;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* Grain texture overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px 200px;
+    }
+
+    a  { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
+    button { cursor: pointer; border: none; background: none; font-family: var(--font-body); }
+
+    /* ============================================================
+       TYPOGRAPHY
+    ============================================================ */
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+    }
+
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+    .container {
+      max-width: var(--max-w);
+      margin-inline: auto;
+      padding-inline: clamp(1.5rem, 5vw, 8rem);
+    }
+    .section-pad { padding-block: clamp(4rem, 8vw, 8rem); }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.9rem 2.5rem;
+      border-radius: 2px;
+      transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--terracotta);
+      color: var(--cream);
+      border: 1px solid var(--terracotta);
+    }
+    .btn-primary:hover { background: var(--sienna); border-color: var(--sienna); transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--cream);
+      border: 1px solid rgba(244,239,228,0.6);
+    }
+    .btn-outline:hover { background: var(--cream); color: var(--umber); transform: translateY(-1px); }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    .nav {
+      position: fixed;
+      inset-block-start: 0;
+      inset-inline: 0;
+      height: 72px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-inline: clamp(1.5rem, 5vw, 8rem);
+      transition: background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+    }
+    .nav.scrolled {
+      background: var(--cream-72);
+      backdrop-filter: blur(12px) saturate(1.4);
+      -webkit-backdrop-filter: blur(12px) saturate(1.4);
+      border-bottom: 1px solid rgba(43,32,15,0.08);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--cream);
+      transition: color 0.4s ease;
+    }
+    .nav.scrolled .nav-logo { color: var(--umber); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(244,239,228,0.8);
+      transition: color 0.25s ease;
+    }
+    .nav.scrolled .nav-links a  { color: var(--umber); }
+    .nav-links a:hover           { color: var(--terracotta); }
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .lang-btn {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(244,239,228,0.45);
+      transition: color 0.25s ease;
+      padding: 0.15rem 0;
+    }
+    .nav.scrolled .lang-btn   { color: rgba(43,32,15,0.35); }
+    .lang-btn.active           { color: var(--terracotta) !important; }
+    .lang-sep {
+      color: rgba(244,239,228,0.2);
+      font-size: 0.7rem;
+      pointer-events: none;
+    }
+    .nav.scrolled .lang-sep { color: rgba(43,32,15,0.15); }
+
+    /* Hamburger */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--cream);
+      transition: background 0.4s ease;
+    }
+    .nav.scrolled .nav-hamburger span { background: var(--umber); }
+
+    /* Mobile overlay */
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--umber);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .nav-overlay.open { display: flex; }
+    .nav-overlay a {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 300;
+      color: var(--cream);
+      letter-spacing: 0.04em;
+    }
+    .nav-overlay a:hover { color: var(--terracotta); }
+    .nav-overlay-close {
+      position: absolute;
+      top: 1.25rem;
+      inset-inline-end: 1.5rem;
+      font-size: 2rem;
+      color: rgba(244,239,228,0.5);
+      line-height: 1;
+    }
+    .nav-overlay-close:hover { color: var(--cream); }
+    .nav-overlay .lang-toggle { margin-top: 1rem; }
+    .nav-overlay .lang-btn { color: rgba(244,239,228,0.4); }
+    .nav-overlay .lang-sep { color: rgba(244,239,228,0.15); }
+
+    @media (max-width: 767px) {
+      .nav-right      { display: none; }
+      .nav-hamburger  { display: flex; }
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--umber);
+    }
+
+    /* IMAGE SLOT: Hero background — replace the SVG below with:
+       <img src="your-hero-painting.jpg" alt="" class="hero-bg-img"> */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-bg svg, .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--umber-60);
+      z-index: 1;
+    }
+    .hero-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 30% 65%, rgba(201,151,58,0.13) 0%, transparent 70%);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      padding-inline: clamp(1.5rem, 5vw, 8rem);
+      max-width: calc(var(--max-w) + 16rem);
+    }
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(64px, 10vw, 140px);
+      font-weight: 300;
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      color: var(--cream);
+      display: block;
+      margin-bottom: 1.75rem;
+    }
+    .hero-tagline {
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(244,239,228,0.7);
+      display: block;
+      margin-bottom: 3rem;
+    }
+    .hero-chevron {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      color: rgba(244,239,228,0.35);
+      font-size: 1.75rem;
+      animation: bob 2.2s ease-in-out infinite;
+      line-height: 1;
+    }
+    @keyframes bob {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(7px); }
+    }
+
+    /* ============================================================
+       GALLERY
+    ============================================================ */
+    .gallery { background: var(--cream); }
+    .gallery-header {
+      text-align: center;
+      margin-bottom: clamp(2rem, 4vw, 4rem);
+    }
+    .gallery-grid {
+      columns: 3 280px;
+      column-gap: var(--gap);
+    }
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: var(--gap);
+      position: relative;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+    .gallery-item svg,
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      transition: transform 0.65s ease;
+    }
+    .gallery-item:hover svg,
+    .gallery-item:hover img { transform: scale(1.03); }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(43,32,15,0.88) 0%, rgba(43,32,15,0.25) 50%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.25rem 1.5rem;
+      pointer-events: none;
+    }
+    .gallery-item:hover .gallery-overlay,
+    .gallery-item:focus  .gallery-overlay { opacity: 1; }
+
+    .g-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--cream);
+      display: block;
+    }
+    .g-dims {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: rgba(244,239,228,0.65);
+      letter-spacing: 0.06em;
+      display: block;
+      margin-top: 0.2rem;
+    }
+
+    .ratio-4-5 { aspect-ratio: 4/5; }
+    .ratio-3-2 { aspect-ratio: 3/2; }
+    .ratio-1-1 { aspect-ratio: 1/1; }
+
+    @media (max-width: 767px) {
+      .gallery-grid { columns: 1; }
+    }
+
+    /* ============================================================
+       LIGHTBOX
+    ============================================================ */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--umber-80);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .lb-wrap {
+      position: relative;
+      max-width: 90vw;
+      max-height: 85vh;
+      border: 1px solid rgba(201,151,58,0.22);
+      transform: scale(0.96);
+      transition: transform 0.3s ease;
+    }
+    .lightbox.open .lb-wrap { transform: scale(1); }
+    .lb-wrap svg,
+    .lb-wrap img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .lb-close {
+      position: absolute;
+      top: 1rem;
+      inset-inline-end: 1.25rem;
+      font-size: 2rem;
+      line-height: 1;
+      color: rgba(244,239,228,0.55);
+      transition: color 0.2s ease;
+      z-index: 201;
+    }
+    .lb-close:hover { color: var(--cream); }
+
+    .lb-prev, .lb-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 3rem;
+      line-height: 1;
+      color: rgba(244,239,228,0.45);
+      transition: color 0.2s ease;
+      z-index: 201;
+      padding-inline: 1rem;
+    }
+    .lb-prev { inset-inline-start: 0.5rem; }
+    .lb-next { inset-inline-end: 0.5rem; }
+    .lb-prev:hover, .lb-next:hover { color: var(--cream); }
+
+    .lb-count {
+      position: absolute;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: rgba(244,239,228,0.45);
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+
+    /* ============================================================
+       ABOUT
+    ============================================================ */
+    .about { background: var(--linen); }
+    .about-inner {
+      display: grid;
+      grid-template-columns: 40% 1fr;
+      gap: clamp(2.5rem, 6vw, 6rem);
+      align-items: start;
+    }
+    .about-portrait {
+      aspect-ratio: 3/4;
+      border-radius: 2px;
+      overflow: hidden;
+      position: sticky;
+      top: 92px;
+    }
+    /* IMAGE SLOT: Portrait — replace SVG with:
+       <img src="portrait.jpg" alt="Eleanor, painter"> */
+    .about-portrait svg,
+    .about-portrait img { width: 100%; height: 100%; object-fit: cover; }
+
+    .about-text .section-heading { margin-bottom: 2rem; }
+    .about-bio p {
+      font-size: 1.1rem;
+      line-height: 1.85;
+      color: var(--umber);
+      margin-bottom: 1.2rem;
+    }
+    .about-stats {
+      display: flex;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(43,32,15,0.1);
+    }
+    .stat {
+      flex: 1;
+      padding-inline: 1.5rem;
+      border-inline-end: 1px solid rgba(43,32,15,0.1);
+    }
+    .stat:first-child { padding-inline-start: 0; }
+    .stat:last-child  { border-inline-end: none; }
+    .stat-label {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--umber);
+    }
+
+    @media (max-width: 767px) {
+      .about-inner { grid-template-columns: 1fr; }
+      .about-portrait { position: static; max-width: 300px; }
+      .about-stats { flex-wrap: wrap; gap: 0; }
+      .stat {
+        flex: 1 0 45%;
+        border-inline-end: none;
+        padding-inline: 0;
+        padding-block-end: 1.25rem;
+        border-bottom: 1px solid rgba(43,32,15,0.1);
+        margin-bottom: 1.25rem;
+      }
+    }
+
+    /* ============================================================
+       COMMISSIONS
+    ============================================================ */
+    .commissions {
+      background: var(--umber);
+      position: relative;
+      overflow: hidden;
+    }
+    .commissions-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 70% 50%, rgba(184,92,48,0.16) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .commissions-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+    .commissions .section-heading { color: var(--cream); margin-bottom: 1.75rem; }
+    .commissions-statement {
+      font-family: var(--font-body);
+      font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(244,239,228,0.78);
+      max-width: var(--max-w-text);
+      margin-inline: auto;
+      margin-bottom: 4rem;
+    }
+    .commissions-formats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid rgba(244,239,228,0.1);
+      margin-bottom: 4rem;
+    }
+    .format-item {
+      padding: 2rem 1.25rem;
+      border-inline-end: 1px solid rgba(244,239,228,0.1);
+      text-align: center;
+    }
+    .format-item:last-child { border-inline-end: none; }
+    .format-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--cream);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .format-desc {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(244,239,228,0.38);
+    }
+
+    @media (max-width: 767px) {
+      .commissions-formats { grid-template-columns: repeat(2, 1fr); }
+      .format-item:nth-child(2) { border-inline-end: none; }
+      .format-item:nth-child(3) { border-inline-end: 1px solid rgba(244,239,228,0.1); }
+    }
+
+    /* ============================================================
+       CONTACT
+    ============================================================ */
+    .contact { background: var(--cream); }
+    .contact-inner .section-heading { margin-bottom: 3rem; }
+    .contact-form-wrap { max-width: 620px; }
+
+    .form-group { margin-bottom: 2.5rem; }
+    .form-label {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(43,32,15,0.45);
+      margin-bottom: 0.5rem;
+    }
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(43,32,15,0.2);
+      padding: 0.75rem 0;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--umber);
+      outline: none;
+      border-radius: 0;
+      transition: border-color 0.2s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus  { border-bottom-color: var(--terracotta); }
+    .form-textarea        { resize: vertical; min-height: 120px; }
+    .form-select          { cursor: pointer; }
+    .form-select option   { background: var(--cream); }
+    .form-submit          { width: 100%; margin-top: 0.5rem; }
+
+    .contact-phone {
+      margin-top: 2rem;
+      font-size: 0.875rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: rgba(43,32,15,0.4);
+    }
+
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 4rem 0;
+    }
+    .success-check {
+      font-size: 3rem;
+      color: var(--terracotta);
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .success-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--umber);
+      margin-bottom: 0.75rem;
+    }
+    .success-msg {
+      font-family: var(--font-body);
+      color: rgba(43,32,15,0.55);
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .footer {
+      background: var(--umber);
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .footer-text {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(244,239,228,0.35);
+    }
+
+    /* ============================================================
+       SCROLL REVEAL
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    .stagger > * {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+    }
+    .stagger.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay: 0.00s; }
+    .stagger.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay: 0.10s; }
+    .stagger.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay: 0.20s; }
+    .stagger.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay: 0.30s; }
+    .stagger.visible > *:nth-child(5) { opacity:1; transform:none; transition-delay: 0.40s; }
+    .stagger.visible > *:nth-child(6) { opacity:1; transform:none; transition-delay: 0.50s; }
+
+    /* ============================================================
+       RTL OVERRIDES (Hebrew)
+    ============================================================ */
+    [dir="rtl"] .hero-content    { text-align: right; }
+    [dir="rtl"] .about-portrait  { order: 2; }
+    [dir="rtl"] .about-text      { order: 1; }
+    [dir="rtl"] .form-label,
+    [dir="rtl"] .form-input,
+    [dir="rtl"] .form-select,
+    [dir="rtl"] .form-textarea   { text-align: right; }
+    [dir="rtl"] .lb-prev { inset-inline-start: auto; inset-inline-end: 0.5rem; }
+    [dir="rtl"] .lb-next { inset-inline-end: auto; inset-inline-start: 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav class="nav" id="nav" aria-label="Main navigation">
+    <a href="#hero" class="nav-logo" data-i18n="nav.logo">Eleanor</a>
+
+    <div class="nav-right">
+      <ul class="nav-links" role="list">
+        <li><a href="#gallery"     data-i18n="nav.gallery">Gallery</a></li>
+        <li><a href="#about"       data-i18n="nav.about">About</a></li>
+        <li><a href="#commissions" data-i18n="nav.commissions">Commissions</a></li>
+        <li><a href="#contact"     data-i18n="nav.contact">Contact</a></li>
+      </ul>
+      <div class="lang-toggle" role="group" aria-label="Language selector">
+        <button class="lang-btn active" onclick="setLanguage('en')" aria-label="English">EN</button>
+        <span class="lang-sep" aria-hidden="true">·</span>
+        <button class="lang-btn" onclick="setLanguage('he')" aria-label="עברית">HE</button>
+        <span class="lang-sep" aria-hidden="true">·</span>
+        <button class="lang-btn" onclick="setLanguage('de')" aria-label="Deutsch">DE</button>
+      </div>
+    </div>
+
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile overlay -->
+  <div class="nav-overlay" id="navOverlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <button class="nav-overlay-close" id="navClose" aria-label="Close menu">×</button>
+    <a href="#gallery"     data-i18n="nav.gallery">Gallery</a>
+    <a href="#about"       data-i18n="nav.about">About</a>
+    <a href="#commissions" data-i18n="nav.commissions">Commissions</a>
+    <a href="#contact"     data-i18n="nav.contact">Contact</a>
+    <div class="lang-toggle" style="margin-top:1rem">
+      <button class="lang-btn active" onclick="setLanguage('en')" aria-label="English">EN</button>
+      <span class="lang-sep" aria-hidden="true">·</span>
+      <button class="lang-btn" onclick="setLanguage('he')" aria-label="עברית">HE</button>
+      <span class="lang-sep" aria-hidden="true">·</span>
+      <button class="lang-btn" onclick="setLanguage('de')" aria-label="Deutsch">DE</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section class="hero" id="hero" aria-labelledby="heroName">
+
+    <!-- IMAGE SLOT: Hero background painting
+         Replace this entire <div class="hero-bg"> with:
+         <div class="hero-bg"><img src="your-painting.jpg" alt=""></div> -->
+    <div class="hero-bg" aria-hidden="true">
+      <svg viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <radialGradient id="hg1" cx="30%" cy="65%" r="75%">
+            <stop offset="0%"   stop-color="#7A3818"/>
+            <stop offset="45%"  stop-color="#3E1E0A"/>
+            <stop offset="100%" stop-color="#140D05"/>
+          </radialGradient>
+          <radialGradient id="hg2" cx="78%" cy="22%" r="45%">
+            <stop offset="0%"   stop-color="#C9973A" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1440" height="900" fill="url(#hg1)"/>
+        <rect width="1440" height="900" fill="url(#hg2)"/>
+        <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"
+              font-family="serif" font-size="13" fill="rgba(244,239,228,0.18)" letter-spacing="4">
+          HERO IMAGE SLOT — replace with real painting
+        </text>
+      </svg>
+    </div>
+
+    <div class="hero-overlay"  aria-hidden="true"></div>
+    <div class="hero-glow"     aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <span class="hero-name" id="heroName" data-i18n="hero.name">Eleanor</span>
+      <span class="hero-tagline"             data-i18n="hero.tagline">Hyper-realistic oil. Canvas to skyline.</span>
+      <a href="#gallery" class="btn btn-primary" data-i18n="hero.cta">View Work</a>
+    </div>
+
+    <span class="hero-chevron" aria-hidden="true">&#8964;</span>
+  </section>
+
+  <!-- ============================================================
+       GALLERY
+  ============================================================ -->
+  <section class="gallery section-pad" id="gallery" aria-label="Gallery">
+    <div class="container">
+      <div class="gallery-header reveal">
+        <h2 class="section-heading" data-i18n="gallery.heading">Works</h2>
+      </div>
+      <!-- IMAGE SLOTS 1–6: injected + randomized by JS. See PAINTINGS array in <script>.
+           To swap a placeholder: find the painting entry and set imgSrc to your file path. -->
+      <div class="gallery-grid stagger" id="galleryGrid" role="list" aria-label="Paintings"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       LIGHTBOX
+  ============================================================ -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lb-close" id="lbClose" aria-label="Close viewer">×</button>
+    <button class="lb-prev"  id="lbPrev"  aria-label="Previous">&#8249;</button>
+    <div    class="lb-wrap"  id="lbWrap"></div>
+    <button class="lb-next"  id="lbNext"  aria-label="Next">&#8250;</button>
+    <div    class="lb-count" id="lbCount" aria-live="polite"></div>
+  </div>
+
+  <!-- ============================================================
+       ABOUT
+  ============================================================ -->
+  <section class="about section-pad" id="about" aria-label="About Eleanor">
+    <div class="container">
+      <div class="about-inner">
+
+        <div class="about-portrait reveal">
+          <!-- IMAGE SLOT: Portrait
+               Replace this SVG with: <img src="portrait.jpg" alt="Eleanor"> -->
+          <svg viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="portGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"   stop-color="#D4C9B4"/>
+                <stop offset="60%"  stop-color="#B8996A" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#8B6040" stop-opacity="0.3"/>
+              </linearGradient>
+            </defs>
+            <rect width="600" height="800" fill="url(#portGrad)"/>
+            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"
+                  font-family="serif" font-size="12" fill="rgba(43,32,15,0.28)" letter-spacing="3">
+              PORTRAIT — replace with real image
+            </text>
+          </svg>
+        </div>
+
+        <div class="about-text">
+          <h2 class="section-heading reveal" data-i18n="about.heading">About</h2>
+          <div class="about-bio">
+            <p class="reveal" data-i18n="about.bio1">Eleanor works at the intersection of scale and precision — her hyper-realistic oil paintings demand both distance and closeness, revealing new detail the longer you look.</p>
+            <p class="reveal" data-i18n="about.bio2">Trained in classical technique, she has spent years pushing the boundaries of what oil on canvas can hold. Her works range from intimate large-format canvases to paintings that fill entire rooms — and beyond.</p>
+            <p class="reveal" data-i18n="about.bio3">She accepts a small number of commissions each year: canvas paintings, interior murals, exterior facades, and large-scale installations. Every project begins with a conversation.</p>
+          </div>
+          <div class="about-stats stagger">
+            <div class="stat">
+              <span class="stat-label" data-i18n="about.stat1.label">Medium</span>
+              <span class="stat-value" data-i18n="about.stat1.value">Oil on Canvas</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label" data-i18n="about.stat2.label">Scale</span>
+              <span class="stat-value" data-i18n="about.stat2.value">Up to XL</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label" data-i18n="about.stat3.label">Surface</span>
+              <span class="stat-value" data-i18n="about.stat3.value">Canvas · Wall · Facade</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COMMISSIONS
+  ============================================================ -->
+  <section class="commissions section-pad" id="commissions" aria-label="Commissions">
+    <div class="commissions-glow" aria-hidden="true"></div>
+    <div class="container commissions-inner">
+
+      <h2 class="section-heading reveal" data-i18n="commissions.heading">Commissions</h2>
+
+      <p class="commissions-statement reveal" data-i18n="commissions.statement">
+        From XL canvas to building facades — Eleanor brings the same obsessive realism to every scale. If you have a wall, she has the vision.
+      </p>
+
+      <div class="commissions-formats stagger">
+        <div class="format-item">
+          <span class="format-name" data-i18n="commissions.format1.name">Canvas</span>
+          <span class="format-desc" data-i18n="commissions.format1.desc">Large &amp; XL oil on canvas</span>
+        </div>
+        <div class="format-item">
+          <span class="format-name" data-i18n="commissions.format2.name">Mural</span>
+          <span class="format-desc" data-i18n="commissions.format2.desc">Interior walls &amp; ceilings</span>
+        </div>
+        <div class="format-item">
+          <span class="format-name" data-i18n="commissions.format3.name">Facade</span>
+          <span class="format-desc" data-i18n="commissions.format3.desc">Exterior building surfaces</span>
+        </div>
+        <div class="format-item">
+          <span class="format-name" data-i18n="commissions.format4.name">Billboard</span>
+          <span class="format-desc" data-i18n="commissions.format4.desc">Large-format signage</span>
+        </div>
+      </div>
+
+      <a href="#contact" class="btn btn-outline reveal" data-i18n="commissions.cta">Get in Touch</a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTACT
+  ============================================================ -->
+  <section class="contact section-pad" id="contact" aria-label="Contact">
+    <div class="container contact-inner">
+      <h2 class="section-heading reveal" data-i18n="contact.heading">Contact</h2>
+      <div class="contact-form-wrap">
+
+        <form id="contactForm" novalidate>
+          <div class="form-group reveal">
+            <label class="form-label" for="fname" data-i18n="contact.name.label">Name</label>
+            <input class="form-input" type="text" id="fname" name="name"
+                   data-i18n-ph="contact.name.ph" placeholder="Your name" required
+                   autocomplete="name">
+          </div>
+          <div class="form-group reveal">
+            <label class="form-label" for="femail" data-i18n="contact.email.label">Email</label>
+            <input class="form-input" type="email" id="femail" name="email"
+                   data-i18n-ph="contact.email.ph" placeholder="your@email.com" required
+                   autocomplete="email">
+          </div>
+          <div class="form-group reveal">
+            <label class="form-label" for="finterest" data-i18n="contact.interest.label">Interest</label>
+            <select class="form-select" id="finterest" name="interest" required>
+              <option value=""         data-i18n="contact.interest.opt0">Select one</option>
+              <option value="purchase" data-i18n="contact.interest.opt1">Purchase a Painting</option>
+              <option value="canvas"   data-i18n="contact.interest.opt2">Canvas Commission</option>
+              <option value="mural"    data-i18n="contact.interest.opt3">Mural</option>
+              <option value="billboard"data-i18n="contact.interest.opt4">Billboard / Facade</option>
+              <option value="other"    data-i18n="contact.interest.opt5">Other</option>
+            </select>
+          </div>
+          <div class="form-group reveal">
+            <label class="form-label" for="fmsg" data-i18n="contact.message.label">Message</label>
+            <textarea class="form-textarea" id="fmsg" name="message" rows="5"
+                      data-i18n-ph="contact.message.ph"
+                      placeholder="Tell me about your project…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary form-submit reveal" data-i18n="contact.submit">
+            Send Message
+          </button>
+        </form>
+
+        <div class="form-success" id="formSuccess" aria-live="polite">
+          <span class="success-check" aria-hidden="true">✓</span>
+          <p class="success-title" data-i18n="contact.success.title">Message sent.</p>
+          <p class="success-msg"   data-i18n="contact.success.msg">Thank you for reaching out. Eleanor will be in touch shortly.</p>
+        </div>
+
+        <p class="contact-phone reveal">
+          <span data-i18n="contact.phone.label">Prefer to talk?</span>
+          <span data-i18n="contact.phone.number"> Call: +1 (000) 000-0000</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="footer" aria-label="Footer">
+    <p class="footer-text">
+      <span data-i18n="nav.logo">Eleanor</span>
+      <span> &middot; &copy; </span>
+      <span id="fyear"></span>
+    </p>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    /* =============================================================
+       TRANSLATIONS
+       To edit copy: find your language section (en / he / de)
+       and update the string values. Do NOT change key names.
+    ============================================================= */
+    const T = {
+      en: {
+        'nav.logo':        'Eleanor',
+        'nav.gallery':     'Gallery',
+        'nav.about':       'About',
+        'nav.commissions': 'Commissions',
+        'nav.contact':     'Contact',
+
+        'hero.name':    'Eleanor',
+        'hero.tagline': 'Hyper-realistic oil. Canvas to skyline.',
+        'hero.cta':     'View Work',
+
+        'gallery.heading': 'Works',
+
+        'about.heading':       'About',
+        'about.bio1': 'Eleanor works at the intersection of scale and precision — her hyper-realistic oil paintings demand both distance and closeness, revealing new detail the longer you look.',
+        'about.bio2': 'Trained in classical technique, she has spent years pushing the boundaries of what oil on canvas can hold. Her works range from intimate large-format canvases to paintings that fill entire rooms — and beyond.',
+        'about.bio3': 'She accepts a small number of commissions each year: canvas paintings, interior murals, exterior facades, and large-scale installations. Every project begins with a conversation.',
+        'about.stat1.label': 'Medium',   'about.stat1.value': 'Oil on Canvas',
+        'about.stat2.label': 'Scale',    'about.stat2.value': 'Up to XL',
+        'about.stat3.label': 'Surface',  'about.stat3.value': 'Canvas · Wall · Facade',
+
+        'commissions.heading':       'Commissions',
+        'commissions.statement':     'From XL canvas to building facades — Eleanor brings the same obsessive realism to every scale. If you have a wall, she has the vision.',
+        'commissions.format1.name':  'Canvas',    'commissions.format1.desc': 'Large & XL oil on canvas',
+        'commissions.format2.name':  'Mural',     'commissions.format2.desc': 'Interior walls & ceilings',
+        'commissions.format3.name':  'Facade',    'commissions.format3.desc': 'Exterior building surfaces',
+        'commissions.format4.name':  'Billboard', 'commissions.format4.desc': 'Large-format signage',
+        'commissions.cta':           'Get in Touch',
+
+        'contact.heading':          'Contact',
+        'contact.name.label':       'Name',
+        'contact.name.ph':          'Your name',
+        'contact.email.label':      'Email',
+        'contact.email.ph':         'your@email.com',
+        'contact.interest.label':   'Interest',
+        'contact.interest.opt0':    'Select one',
+        'contact.interest.opt1':    'Purchase a Painting',
+        'contact.interest.opt2':    'Canvas Commission',
+        'contact.interest.opt3':    'Mural',
+        'contact.interest.opt4':    'Billboard / Facade',
+        'contact.interest.opt5':    'Other',
+        'contact.message.label':    'Message',
+        'contact.message.ph':       'Tell me about your project…',
+        'contact.submit':           'Send Message',
+        'contact.success.title':    'Message sent.',
+        'contact.success.msg':      'Thank you for reaching out. Eleanor will be in touch shortly.',
+        'contact.phone.label':      'Prefer to talk?',
+        'contact.phone.number':     ' Call: +1 (000) 000-0000',
+      },
+
+      he: {
+        'nav.logo':        'אלינור',
+        'nav.gallery':     'גלריה',
+        'nav.about':       'אודות',
+        'nav.commissions': 'הזמנות',
+        'nav.contact':     'צור קשר',
+
+        'hero.name':    'אלינור',
+        'hero.tagline': 'ציור שמן היפר-ריאליסטי. מקנבס עד קו הרקיע.',
+        'hero.cta':     'לצפייה בעבודות',
+
+        'gallery.heading': 'עבודות',
+
+        'about.heading':       'אודות',
+        'about.bio1': 'אלינור עובדת בנקודת המפגש שבין קנה מידה לדיוק — ציורי השמן ההיפר-ריאליסטיים שלה דורשים מרחק וקרבה כאחד, ומגלים פרטים חדשים ככל שמתבוננים זמן רב יותר.',
+        'about.bio2': 'בעלת הכשרה בטכניקה קלאסית, היא עוסקת שנים בדחיפת הגבולות של מה שציור שמן על בד יכול להכיל. עבודותיה נעות בין קנבסים גדולים ועד ציורים הממלאים חדרים שלמים — ומעבר לכך.',
+        'about.bio3': 'היא מקבלת מספר מצומצם של הזמנות בשנה: ציורי קנבס, ציורי קיר פנימיים, חזיתות מבנים והתקנות בקנה מידה גדול. כל פרויקט מתחיל בשיחה.',
+        'about.stat1.label': 'מדיום',    'about.stat1.value': 'שמן על קנבס',
+        'about.stat2.label': 'קנה מידה', 'about.stat2.value': 'עד XL',
+        'about.stat3.label': 'משטח',     'about.stat3.value': 'קנבס · קיר · חזית',
+
+        'commissions.heading':       'הזמנות',
+        'commissions.statement':     'מקנבס XL ועד חזיתות מבנים — אלינור מביאה את אותו ריאליזם אובססיבי לכל קנה מידה. אם יש לך קיר, יש לה חזון.',
+        'commissions.format1.name':  'קנבס',    'commissions.format1.desc': 'שמן גדול ו-XL על קנבס',
+        'commissions.format2.name':  'ציור קיר','commissions.format2.desc': 'קירות ותקרות פנים',
+        'commissions.format3.name':  'חזית',    'commissions.format3.desc': 'משטחי מבנה חיצוניים',
+        'commissions.format4.name':  'שלט',     'commissions.format4.desc': 'שילוט בפורמט גדול',
+        'commissions.cta':           'צרו קשר',
+
+        'contact.heading':          'צור קשר',
+        'contact.name.label':       'שם',
+        'contact.name.ph':          'שמך',
+        'contact.email.label':      'אימייל',
+        'contact.email.ph':         'your@email.com',
+        'contact.interest.label':   'עניין',
+        'contact.interest.opt0':    'בחר/י',
+        'contact.interest.opt1':    'רכישת ציור',
+        'contact.interest.opt2':    'הזמנת קנבס',
+        'contact.interest.opt3':    'ציור קיר',
+        'contact.interest.opt4':    'שלט / חזית',
+        'contact.interest.opt5':    'אחר',
+        'contact.message.label':    'הודעה',
+        'contact.message.ph':       'ספר/י לי על הפרויקט שלך…',
+        'contact.submit':           'שלח/י הודעה',
+        'contact.success.title':    'ההודעה נשלחה.',
+        'contact.success.msg':      'תודה שפנית. אלינור תחזור אליך בהקדם.',
+        'contact.phone.label':      'מעדיפ/ה לדבר?',
+        'contact.phone.number':     ' טל׳: +1 (000) 000-0000',
+      },
+
+      de: {
+        'nav.logo':        'Eleanor',
+        'nav.gallery':     'Galerie',
+        'nav.about':       'Über mich',
+        'nav.commissions': 'Aufträge',
+        'nav.contact':     'Kontakt',
+
+        'hero.name':    'Eleanor',
+        'hero.tagline': 'Hyperrealistisches Öl. Von der Leinwand bis zur Skyline.',
+        'hero.cta':     'Arbeiten ansehen',
+
+        'gallery.heading': 'Werke',
+
+        'about.heading':       'Über mich',
+        'about.bio1': 'Eleanor arbeitet an der Schnittstelle von Maßstab und Präzision — ihre hyperrealistischen Ölgemälde verlangen sowohl Abstand als auch Nähe und offenbaren immer neue Details, je länger man sie betrachtet.',
+        'about.bio2': 'Ausgebildet in klassischer Technik, hat sie jahrelang die Grenzen dessen ausgelotet, was Öl auf Leinwand leisten kann. Ihre Werke reichen von großformatigen Leinwänden bis hin zu Gemälden, die ganze Räume ausfüllen — und darüber hinaus.',
+        'about.bio3': 'Sie nimmt jedes Jahr eine kleine Anzahl von Aufträgen an: Leinwandgemälde, Innenwandgemälde, Außenfassaden und großformatige Installationen. Jedes Projekt beginnt mit einem Gespräch.',
+        'about.stat1.label': 'Medium',    'about.stat1.value': 'Öl auf Leinwand',
+        'about.stat2.label': 'Maßstab',   'about.stat2.value': 'Bis XL',
+        'about.stat3.label': 'Untergrund','about.stat3.value': 'Leinwand · Wand · Fassade',
+
+        'commissions.heading':       'Aufträge',
+        'commissions.statement':     'Von der XL-Leinwand bis zur Gebäudefassade — Eleanor bringt denselben obsessiven Realismus in jeden Maßstab. Wenn Sie eine Wand haben, hat sie die Vision.',
+        'commissions.format1.name':  'Leinwand',    'commissions.format1.desc': 'Großes & XL-Öl auf Leinwand',
+        'commissions.format2.name':  'Wandgemälde', 'commissions.format2.desc': 'Innenwände & Decken',
+        'commissions.format3.name':  'Fassade',     'commissions.format3.desc': 'Außenflächen von Gebäuden',
+        'commissions.format4.name':  'Billboard',   'commissions.format4.desc': 'Großformatige Beschilderung',
+        'commissions.cta':           'Kontakt aufnehmen',
+
+        'contact.heading':          'Kontakt',
+        'contact.name.label':       'Name',
+        'contact.name.ph':          'Ihr Name',
+        'contact.email.label':      'E-Mail',
+        'contact.email.ph':         'ihre@email.com',
+        'contact.interest.label':   'Interesse',
+        'contact.interest.opt0':    'Bitte wählen',
+        'contact.interest.opt1':    'Gemälde kaufen',
+        'contact.interest.opt2':    'Leinwandauftrag',
+        'contact.interest.opt3':    'Wandgemälde',
+        'contact.interest.opt4':    'Billboard / Fassade',
+        'contact.interest.opt5':    'Sonstiges',
+        'contact.message.label':    'Nachricht',
+        'contact.message.ph':       'Erzählen Sie mir von Ihrem Projekt…',
+        'contact.submit':           'Nachricht senden',
+        'contact.success.title':    'Nachricht gesendet.',
+        'contact.success.msg':      'Vielen Dank für Ihre Anfrage. Eleanor meldet sich in Kürze.',
+        'contact.phone.label':      'Lieber telefonieren?',
+        'contact.phone.number':     ' Tel.: +1 (000) 000-0000',
+      }
+    };
+
+    /* =============================================================
+       PAINTINGS
+       To swap a placeholder for a real image:
+         1. Set imgSrc to your file path, e.g. "paintings/solstice.jpg"
+         2. The SVG placeholder is ignored when imgSrc is set.
+       To add more paintings: copy a block and append to the array.
+    ============================================================= */
+    const PAINTINGS = [
+      {
+        id: 1, title: 'Solstice', dims: '180 × 240 cm', ratio: 'ratio-4-5',
+        imgSrc: '', // IMAGE SLOT 1 — set to e.g. "paintings/solstice.jpg"
+        colors: ['#7A3818','#C9973A','#1E1008'], grad: 'radial'
+      },
+      {
+        id: 2, title: 'The Weight of Light', dims: '200 × 150 cm', ratio: 'ratio-3-2',
+        imgSrc: '', // IMAGE SLOT 2
+        colors: ['#B85C30','#EDE5D4','#3A1A08'], grad: 'linear-h'
+      },
+      {
+        id: 3, title: 'Meridian', dims: '160 × 160 cm', ratio: 'ratio-1-1',
+        imgSrc: '', // IMAGE SLOT 3
+        colors: ['#2B200F','#8B4220','#C9973A'], grad: 'diagonal'
+      },
+      {
+        id: 4, title: 'Before the Storm', dims: '220 × 160 cm', ratio: 'ratio-3-2',
+        imgSrc: '', // IMAGE SLOT 4
+        colors: ['#3E1E0A','#B85C30','#F4EFE4'], grad: 'radial'
+      },
+      {
+        id: 5, title: 'Vesper', dims: '170 × 230 cm', ratio: 'ratio-4-5',
+        imgSrc: '', // IMAGE SLOT 5
+        colors: ['#C9973A','#8B4220','#140D05'], grad: 'linear-h'
+      },
+      {
+        id: 6, title: 'Expanse', dims: '200 × 200 cm', ratio: 'ratio-1-1',
+        imgSrc: '', // IMAGE SLOT 6
+        colors: ['#EDE5D4','#B85C30','#2B200F'], grad: 'diagonal'
+      }
+    ];
+
+    /* Build SVG placeholder */
+    function buildSVG(p) {
+      const [c1,c2,c3] = p.colors, id = `g${p.id}`;
+      const grad = p.grad === 'radial'
+        ? `<radialGradient id="${id}" cx="40%" cy="40%" r="65%"><stop offset="0%" stop-color="${c1}"/><stop offset="55%" stop-color="${c2}"/><stop offset="100%" stop-color="${c3}"/></radialGradient>`
+        : p.grad === 'linear-h'
+        ? `<linearGradient id="${id}" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="${c1}"/><stop offset="50%" stop-color="${c2}"/><stop offset="100%" stop-color="${c3}"/></linearGradient>`
+        : `<linearGradient id="${id}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${c1}"/><stop offset="50%" stop-color="${c2}"/><stop offset="100%" stop-color="${c3}"/></linearGradient>`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" style="width:100%;height:100%;display:block">
+        <defs>${grad}</defs>
+        <rect width="400" height="400" fill="url(#${id})"/>
+        <text x="50%" y="44%" text-anchor="middle" dominant-baseline="middle" font-family="Georgia,serif" font-size="16" fill="rgba(244,239,228,0.55)" letter-spacing="1.5">${p.title}</text>
+        <text x="50%" y="56%" text-anchor="middle" dominant-baseline="middle" font-family="Georgia,serif" font-size="11" fill="rgba(244,239,228,0.32)" letter-spacing="1">${p.dims}</text>
+      </svg>`;
+    }
+
+    /* Fisher-Yates shuffle */
+    function shuffle(a) {
+      const b = [...a];
+      for (let i = b.length-1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i+1));
+        [b[i],b[j]] = [b[j],b[i]];
+      }
+      return b;
+    }
+
+    /* =============================================================
+       GALLERY — randomized on each page load
+    ============================================================= */
+    let order = [];
+    let lbIdx = 0;
+
+    function initGallery() {
+      order = shuffle(PAINTINGS);
+      const grid = document.getElementById('galleryGrid');
+      grid.innerHTML = '';
+      order.forEach((p, i) => {
+        const el = document.createElement('div');
+        el.className = `gallery-item ${p.ratio}`;
+        el.setAttribute('role', 'listitem');
+        el.setAttribute('tabindex', '0');
+        el.setAttribute('aria-label', `${p.title}, ${p.dims}`);
+        el.innerHTML = (p.imgSrc
+          ? `<img src="${p.imgSrc}" alt="${p.title}" loading="lazy">`
+          : buildSVG(p))
+          + `<div class="gallery-overlay" aria-hidden="true">
+               <span class="g-title">${p.title}</span>
+               <span class="g-dims">${p.dims}</span>
+             </div>`;
+
+        el.addEventListener('click',    () => openLB(i));
+        el.addEventListener('keydown',  e => { if (e.key==='Enter'||e.key===' ') openLB(i); });
+
+        /* GA4 painting click — fires even without GA loaded.
+           Drop your gtag snippet in the <head> to activate. */
+        el.addEventListener('click', () => {
+          if (typeof gtag === 'function') {
+            gtag('event', 'painting_click', {
+              painting_title: p.title,
+              painting_dims:  p.dims,
+              painting_slot:  i + 1
+            });
+          }
+        });
+
+        grid.appendChild(el);
+      });
+      document.querySelectorAll('.gallery-item').forEach(el => revealObserver.observe(el));
+    }
+
+    /* =============================================================
+       LIGHTBOX
+    ============================================================= */
+    function openLB(i) {
+      lbIdx = i;
+      renderLB();
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLB() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function renderLB() {
+      const p = order[lbIdx];
+      document.getElementById('lbWrap').innerHTML = p.imgSrc
+        ? `<img src="${p.imgSrc}" alt="${p.title}">`
+        : buildSVG(p);
+      document.getElementById('lbCount').textContent = `${lbIdx+1} / ${order.length}`;
+    }
+
+    function initLightbox() {
+      document.getElementById('lbClose').addEventListener('click', closeLB);
+      document.getElementById('lbPrev').addEventListener('click', () => { lbIdx=(lbIdx-1+order.length)%order.length; renderLB(); });
+      document.getElementById('lbNext').addEventListener('click', () => { lbIdx=(lbIdx+1)%order.length; renderLB(); });
+      document.getElementById('lightbox').addEventListener('click', e => { if(e.target.id==='lightbox') closeLB(); });
+      document.addEventListener('keydown', e => {
+        if (!document.getElementById('lightbox').classList.contains('open')) return;
+        if (e.key==='Escape')      closeLB();
+        if (e.key==='ArrowLeft')  { lbIdx=(lbIdx-1+order.length)%order.length; renderLB(); }
+        if (e.key==='ArrowRight') { lbIdx=(lbIdx+1)%order.length; renderLB(); }
+      });
+    }
+
+    /* =============================================================
+       NAV — frosted glass + mobile menu
+    ============================================================= */
+    function initNav() {
+      const nav  = document.getElementById('nav');
+      const ham  = document.getElementById('hamburger');
+      const over = document.getElementById('navOverlay');
+      const cls  = document.getElementById('navClose');
+
+      window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 60);
+      }, { passive: true });
+
+      const open  = () => { over.classList.add('open'); ham.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; };
+      const close = () => { over.classList.remove('open'); ham.setAttribute('aria-expanded','false'); document.body.style.overflow=''; };
+
+      ham.addEventListener('click', open);
+      cls.addEventListener('click', close);
+      over.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+    }
+
+    /* =============================================================
+       SCROLL REVEAL — IntersectionObserver
+    ============================================================= */
+    let revealObserver;
+    function initReveal() {
+      revealObserver = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal, .stagger').forEach(el => revealObserver.observe(el));
+    }
+
+    /* =============================================================
+       LANGUAGE SWITCHER
+    ============================================================= */
+    function setLanguage(lang) {
+      const t = T[lang]; if (!t) return;
+      document.documentElement.lang = lang;
+      document.documentElement.dir  = lang === 'he' ? 'rtl' : 'ltr';
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const v = t[el.getAttribute('data-i18n')];
+        if (v !== undefined) el.textContent = v;
+      });
+      document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        const v = t[el.getAttribute('data-i18n-ph')];
+        if (v !== undefined) el.placeholder = v;
+      });
+      document.querySelectorAll('select option[data-i18n]').forEach(el => {
+        const v = t[el.getAttribute('data-i18n')];
+        if (v !== undefined) el.textContent = v;
+      });
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toUpperCase() === lang.toUpperCase());
+      });
+    }
+
+    /* =============================================================
+       CONTACT FORM — client-side only
+       Wire up your backend or Formspree in the fetch() call below.
+    ============================================================= */
+    function initForm() {
+      const form = document.getElementById('contactForm');
+      const succ = document.getElementById('formSuccess');
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        // TODO: replace with real submission, e.g.:
+        // fetch('https://formspree.io/f/YOUR_ID', { method:'POST', body: new FormData(form) })
+        form.style.display = 'none';
+        succ.style.display = 'block';
+      });
+    }
+
+    /* =============================================================
+       INIT
+    ============================================================= */
+    document.getElementById('fyear').textContent = new Date().getFullYear();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initReveal();
+      initGallery();
+      initLightbox();
+      initNav();
+      initForm();
+    });
+  </script>
+</body>
+</html>
