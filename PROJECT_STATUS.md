@@ -1,6 +1,6 @@
 # Eleanor Website — Project Status
 
-Last updated: 2026-03-19
+Last updated: 2026-03-20
 
 ---
 
@@ -26,9 +26,11 @@ Node.js + Express server (`server.js`). Run `npm run setup` once to set admin pa
 | `DELETE /api/admin/image/:slot` | session | Remove image from a slot |
 | `GET /api/admin/submissions` | session | List all submissions |
 | `DELETE /api/admin/submissions/:id` | session | Delete a submission |
+| `GET /api/admin/analytics` | session | Visit analytics summary |
 
 Image slots: `hero`, `portrait`, `gallery-1` … `gallery-6`. Stored in `uploads/` (gitignored).
 Submissions: SQLite at `data/submissions.db` (gitignored).
+Visits: SQLite at `data/submissions.db` table `page_visits` (gitignored).
 Password: bcrypt hash in `.env` as `ADMIN_PASSWORD_HASH` — never plaintext.
 
 ---
@@ -123,6 +125,7 @@ API key: set in `.env` (see `.env.example`). Never committed.
 
 ## QA Results (last run)
 
+### Public site
 | Category | Status | Notes |
 |---|---|---|
 | Completeness | ✅ PASS | All sections present |
@@ -137,6 +140,17 @@ API key: set in `.env` (see `.env.example`). Never committed.
 | Code Quality | ✅ PASS | Comments, CSS vars, slot markers |
 | RTL Layout | ✅ PASS | Logical props + rtl overrides |
 
+### Analytics dashboard (2026-03-20)
+| Category | Status | Notes |
+|---|---|---|
+| Visit tracking cookie | ✅ PASS | `eleanor_vid` — HttpOnly, SameSite=Lax, 1yr |
+| New vs returning detection | ✅ PASS | `is_new` flag correct in DB |
+| Visitor hash (never raw token) | ✅ PASS | SHA-256 stored, raw token discarded |
+| IP discarded after country lookup | ✅ PASS | Never written to disk |
+| Analytics endpoint auth-protected | ✅ PASS | 302 redirect when unauthenticated |
+| Analytics query correctness | ✅ PASS | All fields verified against live DB |
+| Admin tab UI | ✅ PASS | Verified in browser |
+
 ---
 
 ## Open Tasks
@@ -144,6 +158,7 @@ API key: set in `.env` (see `.env.example`). Never committed.
 ### Required (Reviewer fixes — ✅ DONE)
 - [x] Fix About breakpoint: `max-width: 767px` → `max-width: 768px`
 - [x] Add focus trap to lightbox (keyboard/a11y)
+- [x] Analytics dashboard — visit tracking, country breakdown, 7-day chart
 
 ### Client deliverables needed
 - [ ] Real painting images — upload via `/admin` on live site
@@ -158,6 +173,10 @@ API key: set in `.env` (see `.env.example`). Never committed.
 - [ ] `prefers-reduced-motion` media query to disable animations
 - [ ] Admin: export submissions as CSV
 - [ ] Admin: email notification on new submission
+- [ ] Analytics: gallery click heatmap (which paintings get most lightbox opens)
+- [ ] Analytics: contact form conversion rate (visits vs submissions)
+- [ ] Analytics: date range picker on dashboard
+- [ ] Analytics: self-host Chart.js (currently loaded from jsDelivr CDN)
 
 ---
 

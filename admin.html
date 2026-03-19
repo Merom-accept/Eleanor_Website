@@ -64,23 +64,52 @@
     }
     .btn-logout:hover { color: var(--cream); border-color: rgba(244,239,228,0.5); }
 
+    /* ── Tab bar ─────────────────────────────────────────────── */
+    .tab-bar {
+      position: sticky;
+      top: 56px;
+      z-index: 90;
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      padding: 0 1.5rem;
+    }
+    .tab-btn {
+      font-family: inherit;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      padding: 0.9rem 1.25rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .tab-btn:hover   { color: var(--umber); }
+    .tab-btn.active  { color: var(--umber); border-bottom-color: var(--terra); }
+
+    /* ── Tab panes ───────────────────────────────────────────── */
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
     /* ── Layout ──────────────────────────────────────────────── */
     .admin-main {
       max-width: 1100px;
       margin: 0 auto;
       padding: 2.5rem 1.5rem 4rem;
-      display: flex;
-      flex-direction: column;
-      gap: 3rem;
     }
 
-    /* ── Section wrapper ─────────────────────────────────────── */
+    /* ── Panel (shared wrapper) ──────────────────────────────── */
     .panel {
       background: var(--cream);
       border-radius: 3px;
       border: 1px solid var(--border);
       overflow: hidden;
     }
+    .panel + .panel { margin-top: 3rem; }
     .panel-head {
       background: var(--umber);
       padding: 1rem 1.5rem;
@@ -100,6 +129,19 @@
       color: rgba(244,239,228,0.45);
       letter-spacing: 0.04em;
     }
+    .panel-head .panel-action {
+      margin-left: auto;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(244,239,228,0.55);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.2s;
+    }
+    .panel-head .panel-action:hover { color: var(--cream); }
     .panel-body { padding: 1.5rem; }
 
     /* ── Image slots grid ────────────────────────────────────── */
@@ -108,7 +150,6 @@
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1rem;
     }
-
     .slot-card {
       border: 1px solid var(--border);
       border-radius: 2px;
@@ -117,7 +158,6 @@
       display: flex;
       flex-direction: column;
     }
-
     .slot-preview {
       width: 100%;
       height: 140px;
@@ -138,29 +178,10 @@
     }
     .slot-placeholder svg { opacity: 0.35; }
     .slot-placeholder span { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; }
-
-    .slot-info {
-      padding: 0.65rem 0.75rem 0.5rem;
-      flex: 1;
-    }
-    .slot-name {
-      font-size: 0.78rem;
-      font-weight: bold;
-      letter-spacing: 0.04em;
-      color: var(--umber);
-    }
-    .slot-desc {
-      font-size: 0.68rem;
-      color: var(--muted);
-      margin-top: 0.2rem;
-    }
-
-    .slot-actions {
-      display: flex;
-      gap: 0.5rem;
-      padding: 0.5rem 0.75rem 0.75rem;
-    }
-
+    .slot-info { padding: 0.65rem 0.75rem 0.5rem; flex: 1; }
+    .slot-name { font-size: 0.78rem; font-weight: bold; letter-spacing: 0.04em; color: var(--umber); }
+    .slot-desc { font-size: 0.68rem; color: var(--muted); margin-top: 0.2rem; }
+    .slot-actions { display: flex; gap: 0.5rem; padding: 0.5rem 0.75rem 0.75rem; }
     .btn-upload, .btn-remove {
       flex: 1;
       font-family: inherit;
@@ -173,43 +194,18 @@
       cursor: pointer;
       transition: background 0.2s, opacity 0.2s;
     }
-    .btn-upload {
-      background: var(--terra);
-      color: var(--cream);
-    }
+    .btn-upload { background: var(--terra); color: var(--cream); }
     .btn-upload:hover { background: var(--sienna); }
-
-    .btn-remove {
-      background: rgba(43,32,15,0.08);
-      color: var(--umber);
-    }
+    .btn-remove { background: rgba(43,32,15,0.08); color: var(--umber); }
     .btn-remove:hover { background: rgba(43,32,15,0.16); }
     .btn-remove:disabled { opacity: 0.3; cursor: not-allowed; }
-
-    /* upload progress ring inside the slot card */
     .slot-card.uploading .slot-preview,
     .slot-card.uploading .slot-placeholder { opacity: 0.4; }
     .slot-card.uploading .btn-upload { opacity: 0.5; cursor: wait; }
 
     /* ── Submissions table ───────────────────────────────────── */
-    .badge {
-      display: inline-block;
-      background: var(--terra);
-      color: var(--cream);
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      padding: 0.15rem 0.5rem;
-      border-radius: 20px;
-      vertical-align: middle;
-    }
-
     .table-wrap { overflow-x: auto; }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.82rem;
-    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
     thead th {
       text-align: left;
       padding: 0.65rem 0.75rem;
@@ -224,11 +220,7 @@
     tbody tr { border-bottom: 1px solid var(--border); }
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover { background: rgba(43,32,15,0.03); }
-    tbody td {
-      padding: 0.75rem 0.75rem;
-      vertical-align: top;
-      color: var(--umber);
-    }
+    tbody td { padding: 0.75rem; vertical-align: top; color: var(--umber); }
     .td-date  { white-space: nowrap; color: var(--muted); font-size: 0.75rem; }
     .td-msg   { max-width: 280px; }
     .td-msg p { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
@@ -255,7 +247,6 @@
       white-space: nowrap;
     }
     .btn-del:hover { background: #c0392b; color: #fff; }
-
     .empty {
       text-align: center;
       padding: 3rem 1rem;
@@ -263,6 +254,101 @@
       font-size: 0.85rem;
       letter-spacing: 0.06em;
     }
+
+    /* ── Analytics — zones ───────────────────────────────────── */
+    .analytics-zone { margin-bottom: 1.5rem; }
+    .analytics-zone:last-child { margin-bottom: 0; }
+
+    .zone-heading {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--umber);
+      font-weight: normal;
+      margin-bottom: 1rem;
+    }
+
+    /* ── Stat cards ──────────────────────────────────────────── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+    .stat-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1.25rem 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .stat-card:hover { border-color: rgba(43,32,15,0.3); }
+    .stat-value {
+      font-family: Georgia, serif;
+      font-size: 2.6rem;
+      font-weight: 600;
+      color: var(--umber);
+      line-height: 1;
+      margin-bottom: 0.45rem;
+    }
+    .stat-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ── Chart card ──────────────────────────────────────────── */
+    .chart-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1.5rem;
+    }
+    .chart-wrap {
+      position: relative;
+      height: 240px;
+    }
+    @media (max-width: 600px) { .chart-wrap { height: 180px; } }
+
+    /* ── Country table ───────────────────────────────────────── */
+    .country-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .country-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .country-table thead th {
+      text-align: left;
+      padding: 0.65rem 1rem;
+      background: rgba(43,32,15,0.05);
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-bottom: 1px solid var(--border);
+    }
+    .country-table thead th.num { text-align: right; }
+    .country-table tbody tr { border-bottom: 1px solid var(--border); }
+    .country-table tbody tr:last-child { border-bottom: none; }
+    .country-table tbody tr:nth-child(even) { background: var(--linen); }
+    .country-table tbody td { padding: 0.75rem 1rem; }
+    .country-table .td-num { text-align: right; color: var(--muted); font-size: 0.82rem; }
+    .country-rank { color: var(--gold); margin-right: 0.5rem; font-size: 0.8rem; }
+
+    /* ── Skeleton shimmer ────────────────────────────────────── */
+    @keyframes shimmer {
+      from { background-position: -200% 0; }
+      to   { background-position:  200% 0; }
+    }
+    .skeleton {
+      background: linear-gradient(90deg, var(--linen) 25%, #e4dcc9 50%, var(--linen) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 2px;
+      color: transparent !important;
+    }
+    .skeleton * { visibility: hidden; }
 
     /* ── Toast notification ──────────────────────────────────── */
     #toast {
@@ -291,36 +377,133 @@
     <button class="btn-logout" id="logoutBtn">Log out</button>
   </header>
 
+  <!-- Tab navigation -->
+  <nav class="tab-bar" role="tablist">
+    <button class="tab-btn active" data-tab="images"      role="tab" aria-selected="true">Images</button>
+    <button class="tab-btn"        data-tab="submissions"  role="tab" aria-selected="false">Submissions</button>
+    <button class="tab-btn"        data-tab="analytics"   role="tab" aria-selected="false">Analytics</button>
+  </nav>
+
   <main class="admin-main">
 
-    <!-- ── Images ── -->
-    <div class="panel">
-      <div class="panel-head">
-        <h2>Image Management</h2>
-        <span class="sub">JPG · PNG · WebP · max 20 MB per file</span>
-      </div>
-      <div class="panel-body">
-        <div class="slots-grid" id="slotsGrid"></div>
-      </div>
-    </div>
-
-    <!-- ── Submissions ── -->
-    <div class="panel">
-      <div class="panel-head">
-        <h2>Contact Submissions</h2>
-        <span class="sub" id="subCount"></span>
-      </div>
-      <div class="panel-body">
-        <div id="submissionsWrap"></div>
+    <!-- ══ IMAGES TAB ══════════════════════════════════════════ -->
+    <div class="tab-pane active" id="pane-images">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Image Management</h2>
+          <span class="sub">JPG · PNG · WebP · max 20 MB per file</span>
+        </div>
+        <div class="panel-body">
+          <div class="slots-grid" id="slotsGrid"></div>
+        </div>
       </div>
     </div>
 
+    <!-- ══ SUBMISSIONS TAB ══════════════════════════════════════ -->
+    <div class="tab-pane" id="pane-submissions">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Contact Submissions</h2>
+          <span class="sub" id="subCount"></span>
+        </div>
+        <div class="panel-body">
+          <div id="submissionsWrap"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ANALYTICS TAB ════════════════════════════════════════ -->
+    <div class="tab-pane" id="pane-analytics">
+
+      <!-- Zone 1: Summary cards -->
+      <!-- FUTURE: add gallery click heatmap card here -->
+      <section class="analytics-zone" id="zone-cards">
+        <div class="stat-grid" id="statGrid">
+          <!-- Cards injected by JS -->
+        </div>
+      </section>
+
+      <!-- Zone 2: 7-day chart -->
+      <!-- FUTURE: add second dataset (returning visitors) or date-range picker -->
+      <section class="analytics-zone" id="zone-chart">
+        <div class="chart-card">
+          <div class="panel-head" style="margin: -1.5rem -1.5rem 1.25rem; border-radius: 3px 3px 0 0;">
+            <h2 class="zone-heading" style="margin:0; letter-spacing:0.2em;">Visits — Last 7 Days</h2>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="visitChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Zone 3: Top countries -->
+      <!-- FUTURE: add referrer breakdown table below -->
+      <section class="analytics-zone" id="zone-countries">
+        <div class="country-card">
+          <div class="panel-head" style="border-radius: 3px 3px 0 0;">
+            <h2 class="zone-heading" style="margin:0; letter-spacing:0.2em;">Top Countries</h2>
+            <button class="panel-action" id="refreshBtn">↻ Refresh</button>
+          </div>
+          <div id="countriesWrap"></div>
+        </div>
+      </section>
+
+    </div>
   </main>
 
   <div id="toast"></div>
 
   <script>
-    /* ─── Slot definitions ──────────────────────────────────── */
+    /* ══════════════════════════════════════════════════════════
+       SHARED UTILITIES
+    ══════════════════════════════════════════════════════════ */
+
+    const toastEl = document.getElementById('toast');
+    let toastTimer;
+    function toast(msg, isError = false) {
+      clearTimeout(toastTimer);
+      toastEl.textContent = msg;
+      toastEl.className = 'show' + (isError ? ' error' : '');
+      toastTimer = setTimeout(() => { toastEl.className = ''; }, 2800);
+    }
+
+    function esc(str) {
+      return String(str ?? '')
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function formatDate(iso) {
+      const d = new Date(iso.replace(' ', 'T') + 'Z');
+      return d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })
+        + ' ' + d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       TAB SWITCHING
+    ══════════════════════════════════════════════════════════ */
+
+    const tabBtns  = document.querySelectorAll('.tab-btn');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    let analyticsLoaded = false;
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        tabBtns.forEach(b  => { b.classList.toggle('active', b === btn); b.setAttribute('aria-selected', b === btn); });
+        tabPanes.forEach(p => p.classList.toggle('active', p.id === 'pane-' + tab));
+        // Lazy-load analytics on first open
+        if (tab === 'analytics' && !analyticsLoaded) {
+          analyticsLoaded = true;
+          loadAnalytics();
+        }
+      });
+    });
+
+    /* ══════════════════════════════════════════════════════════
+       IMAGE MANAGEMENT
+    ══════════════════════════════════════════════════════════ */
+
     const SLOTS = [
       { id: 'hero',      label: 'Hero Background',              desc: 'Full-bleed painting — any ratio' },
       { id: 'portrait',  label: 'Artist Portrait',              desc: '3:4 ratio recommended' },
@@ -332,30 +515,16 @@
       { id: 'gallery-6', label: 'Gallery 6 — Expanse',          desc: '200×200 cm' },
     ];
 
-    /* ─── Toast ─────────────────────────────────────────────── */
-    const toastEl = document.getElementById('toast');
-    let toastTimer;
-    function toast(msg, isError = false) {
-      clearTimeout(toastTimer);
-      toastEl.textContent = msg;
-      toastEl.className = 'show' + (isError ? ' error' : '');
-      toastTimer = setTimeout(() => { toastEl.className = ''; }, 2800);
-    }
-
-    /* ─── Image manifest ────────────────────────────────────── */
     let manifest = {};
 
     async function loadManifest() {
-      try {
-        manifest = await fetch('/api/images').then(r => r.json());
-      } catch { manifest = {}; }
+      try { manifest = await fetch('/api/images').then(r => r.json()); }
+      catch { manifest = {}; }
     }
 
-    /* ─── Render slot card ──────────────────────────────────── */
     function renderSlot(slot) {
       const url  = manifest[slot.id];
       const card = document.getElementById('slot-' + slot.id);
-
       const previewHtml = url
         ? `<img class="slot-preview" src="${url}?t=${Date.now()}" alt="${slot.label}">`
         : `<div class="slot-placeholder">
@@ -366,7 +535,6 @@
              </svg>
              <span>No image</span>
            </div>`;
-
       card.innerHTML = `
         ${previewHtml}
         <div class="slot-info">
@@ -374,14 +542,9 @@
           <div class="slot-desc">${slot.desc}</div>
         </div>
         <div class="slot-actions">
-          <button class="btn-upload" data-slot="${slot.id}">
-            ${url ? 'Replace' : 'Upload'}
-          </button>
-          <button class="btn-remove" data-slot="${slot.id}" ${!url ? 'disabled' : ''}>
-            Remove
-          </button>
+          <button class="btn-upload" data-slot="${slot.id}">${url ? 'Replace' : 'Upload'}</button>
+          <button class="btn-remove" data-slot="${slot.id}" ${!url ? 'disabled' : ''}>Remove</button>
         </div>`;
-
       card.querySelector('.btn-upload').addEventListener('click', () => triggerUpload(slot.id));
       card.querySelector('.btn-remove').addEventListener('click', () => removeImage(slot.id));
     }
@@ -398,109 +561,68 @@
       });
     }
 
-    /* ─── Upload ────────────────────────────────────────────── */
     function triggerUpload(slotId) {
       const input = document.createElement('input');
       input.type   = 'file';
       input.accept = 'image/jpeg,image/png,image/webp';
-      input.addEventListener('change', () => {
-        if (input.files[0]) uploadImage(slotId, input.files[0]);
-      });
+      input.addEventListener('change', () => { if (input.files[0]) uploadImage(slotId, input.files[0]); });
       input.click();
     }
 
     async function uploadImage(slotId, file) {
       const card = document.getElementById('slot-' + slotId);
       card.classList.add('uploading');
-
       const form = new FormData();
       form.append('image', file);
-
       try {
         const res  = await fetch(`/api/admin/upload/${slotId}`, { method: 'POST', body: form });
         const data = await res.json();
-        if (data.ok) {
-          manifest[slotId] = data.url;
-          renderSlot(SLOTS.find(s => s.id === slotId));
-          toast('Image uploaded.');
-        } else {
-          toast(data.error || 'Upload failed.', true);
-        }
-      } catch {
-        toast('Upload failed — server unreachable.', true);
-      } finally {
-        card.classList.remove('uploading');
-      }
+        if (data.ok) { manifest[slotId] = data.url; renderSlot(SLOTS.find(s => s.id === slotId)); toast('Image uploaded.'); }
+        else toast(data.error || 'Upload failed.', true);
+      } catch { toast('Upload failed — server unreachable.', true); }
+      finally { card.classList.remove('uploading'); }
     }
 
-    /* ─── Remove ────────────────────────────────────────────── */
     async function removeImage(slotId) {
       if (!confirm('Remove this image?')) return;
       try {
         const res  = await fetch(`/api/admin/image/${slotId}`, { method: 'DELETE' });
         const data = await res.json();
-        if (data.ok !== false) {
-          delete manifest[slotId];
-          renderSlot(SLOTS.find(s => s.id === slotId));
-          toast('Image removed.');
-        }
-      } catch {
-        toast('Could not remove image.', true);
-      }
+        if (data.ok !== false) { delete manifest[slotId]; renderSlot(SLOTS.find(s => s.id === slotId)); toast('Image removed.'); }
+      } catch { toast('Could not remove image.', true); }
     }
 
-    /* ─── Submissions ───────────────────────────────────────── */
+    /* ══════════════════════════════════════════════════════════
+       SUBMISSIONS
+    ══════════════════════════════════════════════════════════ */
+
     let submissions = [];
 
     async function loadSubmissions() {
-      try {
-        submissions = await fetch('/api/admin/submissions').then(r => r.json());
-      } catch { submissions = []; }
+      try { submissions = await fetch('/api/admin/submissions').then(r => r.json()); }
+      catch { submissions = []; }
       renderSubmissions();
     }
 
-    function formatDate(iso) {
-      const d = new Date(iso.replace(' ', 'T') + 'Z');
-      return d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })
-        + ' ' + d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
-    }
-
     const INTEREST_LABELS = {
-      purchase:  'Purchase',
-      canvas:    'Canvas Commission',
-      mural:     'Mural',
-      billboard: 'Billboard / Facade',
-      other:     'Other',
+      purchase: 'Purchase', canvas: 'Canvas Commission',
+      mural: 'Mural', billboard: 'Billboard / Facade', other: 'Other',
     };
 
     function renderSubmissions() {
-      const wrap = document.getElementById('submissionsWrap');
+      const wrap  = document.getElementById('submissionsWrap');
       const count = document.getElementById('subCount');
       count.textContent = submissions.length ? `${submissions.length} submission${submissions.length !== 1 ? 's' : ''}` : '';
-
-      if (!submissions.length) {
-        wrap.innerHTML = '<div class="empty">No submissions yet.</div>';
-        return;
-      }
-
+      if (!submissions.length) { wrap.innerHTML = '<div class="empty">No submissions yet.</div>'; return; }
       wrap.innerHTML = `
         <div class="table-wrap">
           <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Interest</th>
-                <th>Message</th>
-                <th></th>
-              </tr>
-            </thead>
+            <thead><tr>
+              <th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Interest</th><th>Message</th><th></th>
+            </tr></thead>
             <tbody id="subBody"></tbody>
           </table>
         </div>`;
-
       const tbody = document.getElementById('subBody');
       submissions.forEach(s => {
         const tr = document.createElement('tr');
@@ -521,30 +643,173 @@
       if (!confirm('Delete this submission? This cannot be undone.')) return;
       try {
         const res = await fetch(`/api/admin/submissions/${id}`, { method: 'DELETE' });
-        if ((await res.json()).ok) {
-          submissions = submissions.filter(s => s.id !== id);
-          renderSubmissions();
-          toast('Submission deleted.');
+        if ((await res.json()).ok) { submissions = submissions.filter(s => s.id !== id); renderSubmissions(); toast('Submission deleted.'); }
+      } catch { toast('Could not delete submission.', true); }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       ANALYTICS
+    ══════════════════════════════════════════════════════════ */
+
+    /* Country helpers — no static lookup table needed */
+    const countryDisplayNames = new Intl.DisplayNames(['en'], { type: 'region' });
+
+    function countryFlag(code) {
+      if (!code || code === 'XX') return '🌐';
+      try {
+        return [...code.toUpperCase()].map(c => String.fromCodePoint(c.charCodeAt(0) + 127397)).join('');
+      } catch { return '🌐'; }
+    }
+
+    function countryName(code) {
+      if (!code || code === 'XX') return 'Unknown';
+      try { return countryDisplayNames.of(code) || code; } catch { return code; }
+    }
+
+    /* Chart.js lazy loader */
+    let chartJsReady  = false;
+    let chartInstance = null;
+
+    function loadChartJs() {
+      return new Promise(resolve => {
+        if (chartJsReady) return resolve();
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js';
+        s.onload = () => { chartJsReady = true; resolve(); };
+        document.head.appendChild(s);
+      });
+    }
+
+    /* Stat cards */
+    function renderStatCards(data) {
+      const cards = [
+        { label: 'Total Visits',      value: data.total     },
+        { label: 'Unique Visitors',   value: data.unique     },
+        { label: 'Returning',         value: data.returning  },
+        { label: 'Today',             value: data.today      },
+        { label: 'This Week',         value: data.last7.reduce((s, d) => s + d.count, 0) },
+      ];
+      const grid = document.getElementById('statGrid');
+      grid.innerHTML = cards.map(c => `
+        <div class="stat-card">
+          <div class="stat-value">${c.value.toLocaleString()}</div>
+          <div class="stat-label">${c.label}</div>
+        </div>`).join('');
+    }
+
+    /* 7-day bar chart */
+    async function renderChart(data) {
+      await loadChartJs();
+      const ctx = document.getElementById('visitChart');
+      const labels = data.last7.map(d => {
+        const dt = new Date(d.date + 'T00:00:00Z');
+        return dt.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+      });
+      const counts = data.last7.map(d => d.count);
+
+      if (chartInstance) chartInstance.destroy();
+      chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Visits',
+            data: counts,
+            backgroundColor: '#B85C30',
+            hoverBackgroundColor: '#8B4220',
+            borderRadius: 2,
+            borderSkipped: false,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#2B200F',
+              titleColor: '#C9973A',
+              bodyColor: '#F4EFE4',
+              callbacks: { label: ctx => ` ${ctx.parsed.y} visit${ctx.parsed.y !== 1 ? 's' : ''}` }
+            }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: 'rgba(43,32,15,0.55)', font: { size: 11 } } },
+            y: {
+              beginAtZero: true,
+              ticks: { precision: 0, color: 'rgba(43,32,15,0.55)', font: { size: 11 } },
+              grid: { color: '#EDE5D4' }
+            }
+          }
         }
+      });
+    }
+
+    /* Country table */
+    function renderCountries(data) {
+      const wrap = document.getElementById('countriesWrap');
+      if (!data.topCountries.length) {
+        wrap.innerHTML = '<div class="empty">No visit data yet.</div>';
+        return;
+      }
+      wrap.innerHTML = `
+        <table class="country-table">
+          <thead><tr>
+            <th>Country</th>
+            <th class="num">Visits</th>
+            <th class="num">Unique</th>
+          </tr></thead>
+          <tbody>${data.topCountries.map((c, i) => `
+            <tr>
+              <td><span class="country-rank">${i + 1}.</span>${countryFlag(c.country)} ${esc(countryName(c.country))}</td>
+              <td class="td-num">${c.visits.toLocaleString()}</td>
+              <td class="td-num">${c.unique_visitors.toLocaleString()}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>`;
+    }
+
+    /* Skeleton loading state */
+    function showSkeletons() {
+      const grid = document.getElementById('statGrid');
+      grid.innerHTML = Array(5).fill(0).map(() =>
+        `<div class="stat-card skeleton"><div class="stat-value">000</div><div class="stat-label">Loading</div></div>`
+      ).join('');
+      document.getElementById('countriesWrap').innerHTML =
+        '<div class="empty skeleton" style="height:80px"></div>';
+    }
+
+    /* Main analytics loader */
+    async function loadAnalytics() {
+      showSkeletons();
+      try {
+        const data = await fetch('/api/admin/analytics').then(r => r.json());
+        renderStatCards(data);
+        renderChart(data);
+        renderCountries(data);
       } catch {
-        toast('Could not delete submission.', true);
+        toast('Could not load analytics.', true);
+        document.getElementById('statGrid').innerHTML =
+          '<div class="empty" style="grid-column:1/-1">Failed to load data.</div>';
       }
     }
 
-    /* ─── Logout ────────────────────────────────────────────── */
+    /* Refresh button */
+    document.getElementById('refreshBtn').addEventListener('click', loadAnalytics);
+
+    /* ══════════════════════════════════════════════════════════
+       LOGOUT
+    ══════════════════════════════════════════════════════════ */
+
     document.getElementById('logoutBtn').addEventListener('click', async () => {
       await fetch('/api/logout', { method: 'POST' });
       window.location.href = '/login';
     });
 
-    /* ─── Escape helper ─────────────────────────────────────── */
-    function esc(str) {
-      return String(str ?? '')
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
+    /* ══════════════════════════════════════════════════════════
+       INIT
+    ══════════════════════════════════════════════════════════ */
 
-    /* ─── Init ──────────────────────────────────────────────── */
     (async () => {
       await loadManifest();
       buildGrid();
