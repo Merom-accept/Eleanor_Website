@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login — Eleanor</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:  #F4EFE4;
+      --umber:  #2B200F;
+      --terra:  #B85C30;
+      --sienna: #8B4220;
+      --gold:   #C9973A;
+    }
+
+    body {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--umber);
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 380px;
+      margin: 1.5rem;
+      background: var(--cream);
+      padding: 2.5rem 2rem 2rem;
+      border-radius: 3px;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      letter-spacing: 0.12em;
+      color: var(--umber);
+      margin-bottom: 0.25rem;
+    }
+    .logo span {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .divider {
+      width: 32px;
+      height: 1px;
+      background: var(--terra);
+      margin: 1.25rem 0 1.75rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--umber);
+      margin-bottom: 0.45rem;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      border: 1px solid rgba(43,32,15,0.2);
+      border-radius: 2px;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--umber);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input[type="password"]:focus {
+      border-color: var(--terra);
+    }
+
+    .error {
+      font-size: 0.78rem;
+      color: #c0392b;
+      margin-top: 0.6rem;
+      min-height: 1.2em;
+    }
+
+    button {
+      margin-top: 1.4rem;
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--terra);
+      color: var(--cream);
+      border: none;
+      border-radius: 2px;
+      font-family: inherit;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover  { background: var(--sienna); }
+    button:active { opacity: 0.85; }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">Eleanor <br><span>Admin</span></div>
+    <div class="divider"></div>
+
+    <label for="pw">Password</label>
+    <input type="password" id="pw" autofocus autocomplete="current-password">
+    <div class="error" id="err" aria-live="polite"></div>
+
+    <button id="btn">Enter</button>
+  </div>
+
+  <script>
+    const pw  = document.getElementById('pw');
+    const btn = document.getElementById('btn');
+    const err = document.getElementById('err');
+
+    async function login() {
+      err.textContent = '';
+      btn.disabled = true;
+      btn.textContent = 'Checking…';
+
+      try {
+        const res = await fetch('/api/login', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ password: pw.value })
+        });
+        if (res.ok) {
+          window.location.href = '/admin';
+        } else {
+          const data = await res.json().catch(() => ({}));
+          err.textContent = data.error || 'Incorrect password.';
+          pw.value = '';
+          pw.focus();
+        }
+      } catch {
+        err.textContent = 'Could not reach the server.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Enter';
+      }
+    }
+
+    btn.addEventListener('click', login);
+    pw.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+  </script>
+</body>
+</html>

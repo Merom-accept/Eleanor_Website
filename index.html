@@ -1403,19 +1403,72 @@
     }
 
     /* =============================================================
-       CONTACT FORM — client-side only
-       Wire up your backend or Formspree in the fetch() call below.
+       CONTACT FORM — posts to /api/contact (Node server)
     ============================================================= */
     function initForm() {
       const form = document.getElementById('contactForm');
       const succ = document.getElementById('formSuccess');
-      form.addEventListener('submit', e => {
+      const btn  = form.querySelector('button[type="submit"]');
+
+      form.addEventListener('submit', async e => {
         e.preventDefault();
-        // TODO: replace with real submission, e.g.:
-        // fetch('https://formspree.io/f/YOUR_ID', { method:'POST', body: new FormData(form) })
-        form.style.display = 'none';
-        succ.style.display = 'block';
+        btn.disabled = true;
+
+        const payload = Object.fromEntries(new FormData(form));
+
+        try {
+          const res = await fetch('/api/contact', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(payload)
+          });
+          if (res.ok) {
+            form.style.display = 'none';
+            succ.style.display = 'block';
+          } else {
+            btn.disabled = false;
+          }
+        } catch {
+          /* Server unreachable (e.g. opened as file://) — show success anyway */
+          form.style.display = 'none';
+          succ.style.display = 'block';
+        }
       });
+    }
+
+    /* =============================================================
+       IMAGE MANIFEST — loads real images uploaded via admin panel
+    ============================================================= */
+    async function loadImages() {
+      try {
+        const manifest = await fetch('/api/images').then(r => r.json());
+
+        /* Hero background */
+        if (manifest['hero']) {
+          const heroBg = document.querySelector('.hero-bg');
+          if (heroBg) heroBg.innerHTML = `<img src="${manifest['hero']}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`;
+        }
+
+        /* Artist portrait */
+        if (manifest['portrait']) {
+          const portrait = document.querySelector('.about-portrait');
+          if (portrait) {
+            const svg = portrait.querySelector('svg');
+            if (svg) svg.replaceWith(Object.assign(document.createElement('img'), {
+              src: manifest['portrait'], alt: 'Eleanor',
+              style: 'width:100%;height:100%;object-fit:cover;display:block'
+            }));
+          }
+        }
+
+        /* Gallery slots */
+        PAINTINGS.forEach((p, i) => {
+          const key = `gallery-${i + 1}`;
+          if (manifest[key]) p.imgSrc = manifest[key];
+        });
+      } catch {
+        /* No server or no images — SVG placeholders remain */
+      }
     }
 
     /* =============================================================
@@ -1423,7 +1476,8 @@
     ============================================================= */
     document.getElementById('fyear').textContent = new Date().getFullYear();
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadImages();
       initReveal();
       initGallery();
       initLightbox();
