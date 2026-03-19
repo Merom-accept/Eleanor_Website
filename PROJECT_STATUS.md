@@ -1,6 +1,6 @@
 # Eleanor Website — Project Status
 
-Last updated: 2026-03-18
+Last updated: 2026-03-19
 
 ---
 
@@ -62,7 +62,7 @@ API key: set in `.env` (see `.env.example`). Never committed.
 ## Current State of index.html
 
 **File:** `index.html` (root) + `output/index.html` (working copy)
-**Status:** Architect draft — QA reviewed, 2 fixes pending (Reviewer not yet applied)
+**Status:** ✅ Final — all QA fixes applied by Reviewer
 
 ### What's in the file
 - All 7 sections: nav, hero, gallery, about, commissions, contact, footer
@@ -106,11 +106,11 @@ API key: set in `.env` (see `.env.example`). Never committed.
 | Multi-language | ✅ PASS | EN/HE/DE complete, RTL works |
 | Gallery | ✅ PASS | Shuffle, hover, lightbox, GA hooks |
 | Lightbox | ✅ PASS | Fade, nav, counter, ESC/arrows |
-| Responsiveness | ⚠️ WARN | About breakpoint off by 1px |
+| Responsiveness | ✅ PASS | About breakpoint fixed (768px) |
 | Animations | ✅ PASS | IntersectionObserver, stagger, nav |
 | Contact Form | ✅ PASS | All fields, success state, TODO comment |
 | SEO | ✅ PASS | Title, meta, OG, canonical placeholders |
-| Accessibility | ⚠️ WARN | No focus trap in lightbox |
+| Accessibility | ✅ PASS | Focus trap added to lightbox |
 | Code Quality | ✅ PASS | Comments, CSS vars, slot markers |
 | RTL Layout | ✅ PASS | Logical props + rtl overrides |
 
@@ -118,9 +118,9 @@ API key: set in `.env` (see `.env.example`). Never committed.
 
 ## Open Tasks
 
-### Required (Reviewer fixes pending)
-- [ ] Fix About breakpoint: `max-width: 767px` → `max-width: 768px`
-- [ ] Add focus trap to lightbox (keyboard/a11y)
+### Required (Reviewer fixes — ✅ DONE)
+- [x] Fix About breakpoint: `max-width: 767px` → `max-width: 768px`
+- [x] Add focus trap to lightbox (keyboard/a11y)
 
 ### Client deliverables needed
 - [ ] Real painting images (8 slots: 1 hero, 1 portrait, 6 gallery)
