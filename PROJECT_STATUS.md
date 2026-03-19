@@ -1,6 +1,6 @@
 # Eleanor Website — Project Status
 
-Last updated: 2026-03-19
+Last updated: 2026-03-19 (admin panel added)
 
 ---
 
@@ -10,7 +10,30 @@ Single-file artist portfolio website for **Eleanor** — a hyper-realistic oil p
 
 ---
 
-## Pipeline Architecture
+## Server Architecture
+
+Node.js + Express server (`server.js`). Run `npm run setup` once to set admin password, then `npm start`.
+
+| Route | Auth | Purpose |
+|---|---|---|
+| `GET /` | public | Serves `index.html` |
+| `GET /api/images` | public | Image manifest (which slots have uploads) |
+| `POST /api/contact` | public | Saves contact form submission to SQLite |
+| `GET /login` | public | Login page |
+| `POST /api/login` | public | Authenticate (bcrypt compare) |
+| `GET /admin` | session | Admin panel |
+| `POST /api/admin/upload/:slot` | session | Upload image to a slot |
+| `DELETE /api/admin/image/:slot` | session | Remove image from a slot |
+| `GET /api/admin/submissions` | session | List all submissions |
+| `DELETE /api/admin/submissions/:id` | session | Delete a submission |
+
+Image slots: `hero`, `portrait`, `gallery-1` … `gallery-6`. Stored in `uploads/` (gitignored).
+Submissions: SQLite at `data/submissions.db` (gitignored).
+Password: bcrypt hash in `.env` as `ADMIN_PASSWORD_HASH` — never plaintext.
+
+---
+
+## AI Pipeline Architecture
 
 5 AI workers run in sequence via `orchestrator.py`:
 
@@ -133,7 +156,8 @@ API key: set in `.env` (see `.env.example`). Never committed.
 
 ### Nice-to-have (optional)
 - [ ] `prefers-reduced-motion` media query to disable animations
-- [ ] Push to remote GitHub repo (local only so far)
+- [ ] Admin: export submissions as CSV
+- [ ] Admin: email notification on new submission
 
 ---
 
@@ -150,20 +174,28 @@ API key: set in `.env` (see `.env.example`). Never committed.
 
 ```
 Eleanor website/
-├── index.html            ← THE website (current draft)
+├── index.html            ← THE website
+├── server.js             ← Express server (npm start)
+├── setup.js              ← One-time admin password setup (npm run setup)
+├── admin.html            ← Admin panel (served at /admin, session-protected)
+├── login.html            ← Login page (served at /login)
+├── package.json
+├── package-lock.json
 ├── PROJECT_STATUS.md     ← this file
-├── orchestrator.py       ← runs all 5 workers in sequence
-├── chat_step.py          ← Planner conversation runner (used in chat)
-├── requirements.txt      ← anthropic>=0.40.0
+├── .env                  ← ADMIN_PASSWORD_HASH + SESSION_SECRET (gitignored)
 ├── .env.example          ← copy to .env, add API key
-├── .gitignore            ← ignores output/, .env
-├── workers/
-│   ├── base.py           ← streaming base class
-│   ├── planner.py        ← interactive planner
+├── .gitignore
+├── uploads/              ← gitignored — uploaded images stored here
+├── data/                 ← gitignored — submissions.db lives here
+├── workers/              ← AI pipeline workers (Python)
+│   ├── base.py
+│   ├── planner.py
 │   ├── designer.py
 │   ├── architect.py
 │   ├── qa.py
 │   └── reviewer.py
+├── orchestrator.py
+├── chat_step.py
+├── requirements.txt
 └── output/               ← gitignored working files
-    └── index.html        ← working copy (same as root)
 ```
