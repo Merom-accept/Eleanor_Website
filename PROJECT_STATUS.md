@@ -1,6 +1,6 @@
 # Eleanor Website — Project Status
 
-Last updated: 2026-03-19 (admin panel added)
+Last updated: 2026-03-19
 
 ---
 
@@ -96,7 +96,7 @@ API key: set in `.env` (see `.env.example`). Never committed.
 - GA4 click tracking hooks (fires even without GA loaded)
 - IntersectionObserver scroll reveal on all sections + stagger
 - Frosted glass nav on scroll
-- Contact form — client-side only, shows success state on submit
+- Contact form — POSTs to `/api/contact`, saved to SQLite, admin-viewable
 - Grain texture overlay on body
 - Warm radial glows in hero + commissions
 
@@ -116,8 +116,8 @@ API key: set in `.env` (see `.env.example`). Never committed.
 - Real bio text (3 paragraphs in EN — HE/DE will need translation)
 - Phone number (currently `+1 (000) 000-0000`)
 - OG image + canonical URL in `<head>`
-- Formspree (or other) endpoint in the form's `TODO` comment
 - GA4 tag ID in the commented-out gtag snippet
+- Images uploaded via admin panel (`/admin`) — no code change needed
 
 ---
 
@@ -146,13 +146,13 @@ API key: set in `.env` (see `.env.example`). Never committed.
 - [x] Add focus trap to lightbox (keyboard/a11y)
 
 ### Client deliverables needed
-- [ ] Real painting images (8 slots: 1 hero, 1 portrait, 6 gallery)
+- [ ] Real painting images — upload via `/admin` on live site
 - [ ] Final bio copy in EN (Architect used placeholder text)
-- [ ] Phone number
-- [ ] OG image
-- [ ] Domain / canonical URL
-- [ ] Formspree (or backend) endpoint
+- [ ] Phone number (currently `+1 (000) 000-0000`)
+- [ ] OG image + canonical URL in `<head>`
 - [ ] GA4 tag ID
+- [ ] Set `ADMIN_PASSWORD_HASH` + `SESSION_SECRET` in Railway dashboard
+- [ ] Custom domain (optional)
 
 ### Nice-to-have (optional)
 - [ ] `prefers-reduced-motion` media query to disable animations
@@ -161,12 +161,12 @@ API key: set in `.env` (see `.env.example`). Never committed.
 
 ---
 
-## Git State
+## Hosting
 
-- Repo: local only — `main` branch, 2 commits
-- Commit 1: workers + orchestrator
-- Commit 2: `index.html` (Architect draft)
-- Remote: https://github.com/Merom-accept/Eleanor_Website
+- **Local dev:** `npm start` → http://localhost:3000
+- **Production:** Railway — auto-deploys on every `git push origin main`
+- **Repo:** https://github.com/Merom-accept/Eleanor_Website (public)
+- **Environment vars to set in Railway dashboard:** `ADMIN_PASSWORD_HASH`, `SESSION_SECRET`
 
 ---
 
