@@ -142,7 +142,7 @@ API key: set in `.env` (see `.env.example`). Never committed.
 - Repo: local only — `main` branch, 2 commits
 - Commit 1: workers + orchestrator
 - Commit 2: `index.html` (Architect draft)
-- Remote: not yet set up — needs `git remote add origin <url>`
+- Remote: https://github.com/Merom-accept/Eleanor_Website
 
 ---
 
